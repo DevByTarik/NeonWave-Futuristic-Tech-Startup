@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NeonWave — Futuristic Tech Startup</title>
+  <meta name="description" content="NeonWave — futuristic product. Glowing UI, floating particles, premium interactions." />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet">
+  <style>
+    /* =========================
+       Variables & Base
+       ========================= */
+    :root{
+      --bg:#071028;
+      --panel: rgba(255,255,255,0.03);
+      --muted:#a8c3e6;
+      --white:#eaf6ff;
+      --accent-1: #43a6ff;      /* bright blue */
+      --accent-2: #7be3ff;      /* cyan */
+      --glow: 0 10px 40px rgba(67,166,255,0.12), inset 0 -2px 10px rgba(123,227,255,0.02);
+      --glass: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      --radius:14px;
+      --container: min(1200px, 92%);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: radial-gradient(1000px 600px at 10% 10%, rgba(67,166,255,0.06), transparent 6%), var(--bg);
+      color:var(--white);
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      line-height:1.45;
+    }
+    .wrap{max-width:var(--container);margin:0 auto;padding: 2.2rem 1rem;}
+
+    /* =========================
+       NAV (sticky + active)
+       ========================= */
+    header{
+      position:sticky;top:14px;z-index:999;
+      display:flex;justify-content:center;
+      pointer-events:auto;
+    }
+    .nav{
+      width:100%;max-width:var(--container);display:flex;align-items:center;justify-content:space-between;padding:.6rem 1rem;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;backdrop-filter: blur(6px);
+      border:1px solid rgba(255,255,255,0.03);
+      transition: box-shadow .28s, transform .28s;
+    }
+    .brand{display:flex;align-items:center;gap:.85rem;color:var(--white);text-decoration:none}
+    .logo{
+      width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--accent-1),var(--accent-2));
+      display:grid;place-items:center;font-weight:700;color:#051025;font-family:"Space Grotesk",sans-serif;
+      box-shadow: var(--glow);
+    }
+    nav ul{display:flex;gap:1rem;list-style:none;margin:0;padding:0;align-items:center}
+    nav a{
+      color:var(--muted);text-decoration:none;padding:.6rem .8rem;border-radius:10px;font-weight:600;font-size:.95rem;transition: color .22s, background .22s, transform .18s;
+    }
+    nav a:hover{color:var(--white);transform:translateY(-2px)}
+    nav a.active{color:var(--accent-1);background:rgba(67,166,255,0.06);box-shadow:0 6px 22px rgba(67,166,255,0.06)}
+    .nav-actions{display:flex;gap:.6rem;align-items:center}
+    .btn{
+      padding:.55rem .9rem;border-radius:999px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--white);font-weight:700;cursor:pointer;
+      transition: transform .18s, box-shadow .18s;
+    }
+    .btn:focus{outline:2px solid rgba(67,166,255,0.14)}
+    .btn.glow{
+      background: linear-gradient(90deg, rgba(67,166,255,0.12), rgba(123,227,255,0.08));
+      box-shadow: 0 10px 36px rgba(67,166,255,0.09);
+      border:1px solid rgba(67,166,255,0.45);
+      color:var(--white);
+    }
+
+    /* =========================
+       HERO (particles canvas)
+       ========================= */
+    .hero{
+      position:relative;
+      min-height:90vh;
+      display:grid;align-items:center;
+      padding:6rem 0 4rem;
+      overflow:visible;
+    }
+    canvas#particles{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;filter:drop-shadow(0 6px 28px rgba(67,166,255,0.03))}
+    .hero-inner{position:relative;z-index:2;display:grid;grid-template-columns: 1fr 420px;gap:3rem;align-items:center;max-width:var(--container);margin:0 auto;padding:0 1rem}
+    .hero-left h1{font-family:"Space Grotesk",sans-serif;font-size:clamp(2rem,5.2vw,3.6rem);margin:0 0 .6rem}
+    .hero-left p{color:var(--muted);max-width:62ch;margin:0 0 1.4rem}
+    .cta-row{display:flex;gap:1rem;align-items:center}
+    .cta-primary{background:linear-gradient(90deg,var(--accent-1),var(--accent-2));padding:.75rem 1.1rem;border-radius:12px;border:none;color:#021025;font-weight:800;cursor:pointer;box-shadow:0 12px 40px rgba(67,166,255,0.12);transition:transform .16s}
+    .cta-primary:hover{transform:translateY(-4px);filter:brightness(1.03)}
+    .cta-ghost{padding:.6rem .95rem;border-radius:12px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--white)}
+    .hero-card{
+      padding:1.1rem;border-radius:14px;background:var(--glass);border:1px solid rgba(255,255,255,0.03);box-shadow:0 20px 60px rgba(3,7,15,0.5);
+    }
+    .hero-stats{display:flex;gap:1rem;align-items:center;justify-content:space-between}
+    .stat{display:flex;flex-direction:column;gap:.25rem}
+    .stat .num{font-weight:800;color:var(--accent-2);font-size:1.25rem}
+
+    /* floating mini cards */
+    .float{
+      position:absolute;border-radius:12px;padding:.6rem .8rem;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.008));
+      border:1px solid rgba(255,255,255,0.03);box-shadow:0 20px 40px rgba(2,6,23,0.6);
+      z-index:1;transform:translate3d(0,0,0)
+    }
+    .float.small{width:140px;right:8%;top:22%}
+    .float.mid{width:180px;left:10%;bottom:8%}
+
+    /* =========================
+       FEATURES (icons animate)
+       ========================= */
+    section{padding:4.2rem 1rem}
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
+    .feature{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008));
+      border:1px solid rgba(255,255,255,0.03);padding:1.4rem;border-radius:12px;display:flex;gap:1rem;align-items:flex-start;
+      transition:transform .32s,box-shadow .32s;
+    }
+    .feature:hover{transform:translateY(-10px);box-shadow:0 20px 50px rgba(3,7,15,0.6)}
+    .fi{
+      width:56px;height:56px;border-radius:10px;display:grid;place-items:center;font-weight:800;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));
+      color:#021025;box-shadow:0 8px 22px rgba(67,166,255,0.08)
+    }
+    .feature h3{margin:0;font-size:1.05rem}
+    .feature p{margin:0;color:var(--muted);font-size:.95rem}
+
+    /* animation-ready: will animate by JS adding .in */
+    .feature .fi{transform:translateY(20px) scale(.98);opacity:.01;transition:transform .6s cubic-bezier(.16,1,.3,1),opacity .6s}
+    .feature.in .fi{transform:none;opacity:1}
+
+    /* =========================
+       PRODUCT DEMO (slider)
+       ========================= */
+    .demo{display:grid;grid-template-columns:1fr 420px;gap:2rem;align-items:center}
+    .slides{position:relative;overflow:hidden;border-radius:12px;border:1px solid rgba(255,255,255,0.03);background:var(--panel);height:300px}
+    .slides-track{display:flex;height:100%;transition:transform .7s cubic-bezier(.2,.9,.2,1)}
+    .slide{min-width:100%;display:grid;place-items:center;padding:1.4rem}
+    .slide .mock{width:92%;height:86%;background:linear-gradient(180deg, rgba(67,166,255,0.06), rgba(123,227,255,0.02));border-radius:10px;display:grid;place-items:center;box-shadow:var(--glow)}
+    .slider-controls{display:flex;gap:.6rem;align-items:center}
+    .ctrl{width:42px;height:42px;border-radius:8px;background:rgba(0,0,0,0.18);display:grid;place-items:center;cursor:pointer;border:1px solid rgba(255,255,255,0.03)}
+    .dot{width:10px;height:10px;border-radius:999px;background:rgba(255,255,255,0.08)}
+    .dot.active{background:var(--accent-2);box-shadow:0 8px 20px rgba(123,227,255,0.12)}
+
+    /* =========================
+       FAQ accordion
+       ========================= */
+    .faq{max-width:920px;margin:0 auto;display:grid;gap:.6rem}
+    .acc{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008));
+      border:1px solid rgba(255,255,255,0.03);padding:.9rem 1rem;border-radius:10px;
+    }
+    .acc .q{display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+    .acc .a{margin-top:.6rem;color:var(--muted);max-height:0;overflow:hidden;transition:max-height .36s ease;padding-right:.2rem}
+
+    /* =========================
+       CONTACT form
+       ========================= */
+    .contact-form{max-width:720px;padding:1rem;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    .field{position:relative;margin-bottom:.9rem}
+    .field input,.field textarea{
+      width:100%;padding:12px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--white);outline:none;transition:box-shadow .22s,border-color .22s,transform .22s;
+    }
+    .field label{position:absolute;left:12px;top:10px;color:var(--muted);font-size:.92rem;pointer-events:none;transition:transform .18s,color .18s}
+    .field input:focus,.field textarea:focus{box-shadow:0 10px 36px rgba(67,166,255,0.08);border-color:rgba(67,166,255,0.45)}
+    .field input:focus + label,.field textarea:focus + label,
+    .field input:not(:placeholder-shown) + label,.field textarea:not(:placeholder-shown) + label{
+      transform:translateY(-14px) scale(.88);color:var(--accent-2)
+    }
+    .send{padding:.8rem 1.1rem;border-radius:10px;border:none;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:#021025;font-weight:800;cursor:pointer}
+
+    /* =========================
+       Footer
+       ========================= */
+    footer{padding:2.4rem 1rem;text-align:center;color:var(--muted);border-top:1px solid rgba(255,255,255,0.02)}
+
+    /* responsive */
+    @media (max-width:1000px){
+      .hero-inner{grid-template-columns:1fr}
+      .demo{grid-template-columns:1fr}
+      .features{grid-template-columns:1fr}
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{transition:none !important;animation:none !important}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header / Nav -->
+  <header>
+    <div class="nav" role="navigation" aria-label="Primary">
+      <a class="brand" href="#" aria-label="NeonWave">
+        <div class="logo">N</div><div style="font-weight:700">NeonWave</div>
+      </a>
+
+      <nav aria-label="Main navigation">
+        <ul id="navLinks">
+          <li><a href="#home" data-target="home" class="active">Home</a></li>
+          <li><a href="#features" data-target="features">Features</a></li>
+          <li><a href="#product" data-target="product">Product</a></li>
+          <li><a href="#faq" data-target="faq">FAQ</a></li>
+          <li><a href="#contact" data-target="contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn glow" id="tryBtn">Try demo</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main>
+    <section id="home" class="hero" aria-label="Hero">
+      <canvas id="particles"></canvas>
+
+      <div class="hero-inner">
+        <div class="hero-left">
+          <h1>Real-time insights for a hyper-connected world</h1>
+          <p>NeonWave ingests streaming signals, surfaces intelligent alerts, and helps teams move faster — with clarity, privacy, and speed.</p>
+
+          <div class="cta-row" role="group" aria-label="Primary actions">
+            <button class="cta-primary" id="primaryCTA">Get Early Access</button>
+            <button class="cta-ghost" id="exploreBtn">Explore Product</button>
+          </div>
+
+          <div style="margin-top:1.4rem;display:flex;gap:1rem;align-items:center">
+            <div style="display:flex;gap:.8rem;align-items:center">
+              <div style="width:44px;height:44px;border-radius:10px;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));display:grid;place-items:center;color:#021025;font-weight:800">AI</div>
+              <div>
+                <div style="font-weight:700">99.99% uptime</div>
+                <div style="color:var(--muted);font-size:.92rem">Enterprise grade infra</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-hidden="false">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem">
+            <div style="font-weight:800">Live Stream</div>
+            <div style="color:var(--muted);font-size:.9rem">Latency: 120ms</div>
+          </div>
+
+          <div style="height:160px;border-radius:10px;background:linear-gradient(90deg, rgba(67,166,255,0.06), rgba(123,227,255,0.02));display:grid;place-items:center;color:var(--muted);font-weight:700">
+            Live dashboard preview
+          </div>
+
+          <div style="display:flex;gap:1rem;margin-top:1rem" class="hero-stats">
+            <div class="stat"><div class="num">+24%</div><div style="color:var(--muted);font-size:.85rem">Engagement</div></div>
+            <div class="stat"><div class="num">2.3x</div><div style="color:var(--muted);font-size:.85rem">Faster ops</div></div>
+          </div>
+        </aside>
+
+        <!-- floating mini cards -->
+        <div class="float small" style="right:6%;top:18%;">
+          <div style="font-weight:700">Edge</div><div style="color:var(--muted);font-size:.9rem">Compute nodes</div>
+        </div>
+        <div class="float mid" style="left:6%;bottom:6%;">
+          <div style="font-weight:700">ML</div><div style="color:var(--muted);font-size:.9rem">Model tuning</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" aria-label="Features" class="wrap">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
+        <h2 style="margin:0">Core features</h2>
+        <div style="margin-left:auto;color:var(--muted)">Designed for scale</div>
+      </div>
+
+      <div class="features" id="featuresGrid">
+        <div class="feature" tabindex="0">
+          <div class="fi">⚡</div>
+          <div>
+            <h3>Realtime Processing</h3>
+            <p>Millisecond ingestion and streaming pipelines for mission-critical apps.</p>
+          </div>
+        </div>
+
+        <div class="feature" tabindex="0">
+          <div class="fi">🔒</div>
+          <div>
+            <h3>Privacy-First</h3>
+            <p>End-to-end encryption and on-prem connectors for sensitive data.</p>
+          </div>
+        </div>
+
+        <div class="feature" tabindex="0">
+          <div class="fi">📈</div>
+          <div>
+            <h3>Actionable AI</h3>
+            <p>Automated signals and explainable models that power decisions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCT DEMO -->
+    <section id="product" aria-label="Product demo" class="wrap">
+      <div style="display:flex;align-items:flex-start;gap:2rem;flex-wrap:wrap">
+        <div class="slides" aria-roledescription="carousel" style="flex:1;min-width:320px">
+          <div class="slides-track" id="slidesTrack">
+            <div class="slide"><div class="mock">Live: alerts timeline</div></div>
+            <div class="slide"><div class="mock">Map: global coverage</div></div>
+            <div class="slide"><div class="mock">Analyzer: model outputs</div></div>
+          </div>
+        </div>
+
+        <div style="width:320px;min-width:260px;display:flex;flex-direction:column;gap:1rem;align-items:flex-start">
+          <div style="font-weight:700">Product demo</div>
+          <div style="color:var(--muted)">Slide through common workflows and see how NeonWave reduces time to insight.</div>
+          <div style="display:flex;gap:.6rem;margin-top:1rem;align-items:center">
+            <div class="ctrl" id="prevBtn" aria-label="Previous">&#9664;</div>
+            <div class="ctrl" id="nextBtn" aria-label="Next">&#9654;</div>
+            <div style="display:flex;gap:.5rem;margin-left:8px" id="dots"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" aria-label="FAQ" class="wrap">
+      <h2>Frequently asked</h2>
+      <div style="color:var(--muted);margin-bottom:1rem">Common questions about NeonWave</div>
+
+      <div class="faq" id="faqList">
+        <div class="acc">
+          <div class="q">What integrations are supported? <span>+</span></div>
+          <div class="a">We support major cloud providers, webhooks, Kafka, and custom connectors.</div>
+        </div>
+
+        <div class="acc">
+          <div class="q">Is there an SLA? <span>+</span></div>
+          <div class="a">Yes — enterprise plans include a 99.99% uptime SLA and dedicated support.</div>
+        </div>
+
+        <div class="acc">
+          <div class="q">How is data secured? <span>+</span></div>
+          <div class="a">Data is encrypted in transit and at rest. We also offer private deployments and VPC peering.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" aria-label="Contact" class="wrap">
+      <div style="display:flex;gap:2rem;flex-wrap:wrap;align-items:flex-start">
+        <div style="flex:1;min-width:320px">
+          <h2>Contact sales</h2>
+          <p style="color:var(--muted)">Tell us about your use case and we'll suggest a plan that fits.</p>
+          <div style="margin-top:1rem;color:var(--muted)">Office: Remote • Timezone: Europe/Sarajevo</div>
+        </div>
+
+        <form class="contact-form" id="contactForm" style="flex-basis:420px" novalidate>
+          <div class="field">
+            <input id="name" name="name" type="text" placeholder=" " required />
+            <label for="name">Full name</label>
+          </div>
+          <div class="field">
+            <input id="email" name="email" type="email" placeholder=" " required />
+            <label for="email">Work email</label>
+          </div>
+          <div class="field">
+            <textarea id="message" name="message" rows="5" placeholder=" " required></textarea>
+            <label for="message">How can we help?</label>
+          </div>
+
+          <button class="send" type="submit">Request demo</button>
+        </form>
+      </div>
+    </section>
+
+    <footer>
+      <div style="max-width:var(--container);margin:0 auto;padding:1rem;display:flex;justify-content:space-between;align-items:center">
+        <div>&copy; NeonWave <span id="year"></span></div>
+        <div style="color:var(--muted)">Built with a futuristic touch</div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- JS: particles, slider, features animate, faq accordion, nav highlights, form -->
+  <script>
+  // -------------------------
+  // Utilities
+  // -------------------------
+  const $ = s => document.querySelector(s);
+  const $$ = s => Array.from(document.querySelectorAll(s));
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // -------------------------
+  // Particles background (canvas)
+  // -------------------------
+  (function(){
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    let w = canvas.width = canvas.clientWidth;
+    let h = canvas.height = canvas.clientHeight;
+    let particles = [];
+    const count = Math.max(36, Math.floor((w*h)/90000));
+
+    function rand(min,max){ return Math.random()*(max-min)+min;}
+    function resize(){ w = canvas.width = canvas.clientWidth; h = canvas.height = canvas.clientHeight; initParticles(); }
+    window.addEventListener('resize', resize, {passive:true});
+
+    function initParticles(){
+      particles = [];
+      for(let i=0;i<count;i++){
+        particles.push({
+          x: Math.random()*w,
+          y: Math.random()*h,
+          r: rand(0.6,2.6),
+          vx: rand(-0.2,0.6),
+          vy: rand(-0.1,0.2),
+          o: rand(0.06,0.28),
+          hue: rand(195,215)
+        });
+      }
+    }
+
+    function draw(){
+      ctx.clearRect(0,0,w,h);
+      // subtle star field
+      for(let p of particles){
+        p.x += p.vx;
+        p.y += p.vy;
+        if(p.x > w+10) p.x = -10;
+        if(p.x < -10) p.x = w+10;
+        if(p.y > h+10) p.y = -10;
+        if(p.y < -10) p.y = h+10;
+
+        ctx.beginPath();
+        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r*6);
+        g.addColorStop(0, `hsla(${p.hue},90%,65%,${p.o*1.3})`);
+        g.addColorStop(0.2, `hsla(${p.hue+20},80%,62%,${p.o*0.9})`);
+        g.addColorStop(1, `rgba(10,20,40,0)`);
+        ctx.fillStyle = g;
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fill();
+      }
+
+      // connecting lines for close particles
+      for(let i=0;i<particles.length;i++){
+        for(let j=i+1;j<particles.length;j++){
+          const a=particles[i], b=particles[j];
+          const dx=a.x-b.x, dy=a.y-b.y; const d=dx*dx+dy*dy;
+          if(d<9000){
+            ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
+            ctx.strokeStyle = `rgba(115,200,255,${0.01+ (9000-d)/14000})`;
+            ctx.lineWidth = 0.6; ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+
+    initParticles();
+    draw();
+  })();
+
+  // -------------------------
+  // Smooth scroll for nav
+  // -------------------------
+  document.querySelectorAll('nav a[data-target]').forEach(a=>{
+    a.addEventListener('click', (e)=>{
+      e.preventDefault();
+      const id = a.getAttribute('href');
+      const el = document.querySelector(id);
+      if(!el) return;
+      el.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+
+  // -------------------------
+  // Active section highlighting (sticky nav)
+  // -------------------------
+  const navLinks = $$('#navLinks a');
+  const sections = ['home','features','product','faq','contact'].map(id => document.getElementById(id));
+  const observerOpts = { root:null, rootMargin:'-20% 0% -60% 0%', threshold:0 };
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(ent=>{
+      if(ent.isIntersecting){
+        const id = ent.target.id;
+        navLinks.forEach(a=>a.classList.toggle('active', a.dataset.target===id));
+      }
+    })
+  }, observerOpts);
+  sections.forEach(s=>s && observer.observe(s));
+
+  // -------------------------
+  // Features icons animate on scroll
+  // -------------------------
+  const featureEls = $$('.feature');
+  const featObserver = new IntersectionObserver((entries,obs)=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting){
+        en.target.classList.add('in');
+        obs.unobserve(en.target);
+      }
+    });
+  }, {threshold: 0.25});
+  featureEls.forEach(el=>featObserver.observe(el));
+
+  // -------------------------
+  // Product slider (vanilla)
+  // -------------------------
+  (function(){
+    const track = $('#slidesTrack');
+    const slides = $$('.slide');
+    const prev = $('#prevBtn'); const next = $('#nextBtn'); const dotsWrap = $('#dots');
+    let index=0; const total = slides.length;
+    let autoplay = true; let timer;
+
+    function renderDots(){
+      dotsWrap.innerHTML=''; for(let i=0;i<total;i++){ const d=document.createElement('div'); d.className='dot'; d.dataset.idx=i; if(i===0) d.classList.add('active'); dotsWrap.appendChild(d); d.addEventListener('click', ()=>go(i)); }
+    }
+    function go(i){
+      index = (i+total)%total;
+      track.style.transform = `translateX(-${index*100}%)`;
+      $$('.dot').forEach(d=>d.classList.toggle('active', Number(d.dataset.idx)===index));
+      resetAuto();
+    }
+    prev && prev.addEventListener('click', ()=>go(index-1));
+    next && next.addEventListener('click', ()=>go(index+1));
+    function auto(){ timer = setInterval(()=>go(index+1), 4200); }
+    function resetAuto(){ if(!autoplay) return; clearInterval(timer); setTimeout(auto, 1400); }
+    renderDots(); auto();
+    // pause on hover
+    const slidesEl = track.parentElement;
+    slidesEl.addEventListener('mouseenter', ()=>{ clearInterval(timer); autoplay=false; });
+    slidesEl.addEventListener('mouseleave', ()=>{ autoplay=true; auto(); });
+  })();
+
+  // -------------------------
+  // FAQ accordion
+  // -------------------------
+  (function(){
+    const accs = $$('#faqList .acc');
+    accs.forEach(acc=>{
+      const q = acc.querySelector('.q');
+      const a = acc.querySelector('.a');
+      q.addEventListener('click', ()=>{
+        const open = acc.classList.contains('open');
+        // close others
+        accs.forEach(x=>{
+          x.classList.remove('open');
+          x.querySelector('.a').style.maxHeight = null;
+        });
+        if(!open){
+          acc.classList.add('open');
+          a.style.maxHeight = a.scrollHeight + 'px';
+        }
+      });
+    });
+    // init: collapse
+    setTimeout(()=>{ accs.forEach(x=>x.querySelector('.a').style.maxHeight = null); }, 200);
+  })();
+
+  // -------------------------
+  // Contact Form simple handling (simulate send)
+  // -------------------------
+  (function(){
+    const form = $('#contactForm');
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const btn = form.querySelector('.send');
+      btn.disabled = true; btn.textContent = 'Sending...';
+      setTimeout(()=>{
+        btn.textContent = 'Request demo';
+        btn.disabled = false;
+        form.reset();
+        // subtle feedback
+        btn.animate([{transform:'scale(0.98)'},{transform:'scale(1)'}],{duration:260,easing:'ease-out'});
+        alert('Thanks — we received your request. We will contact you shortly.');
+      },1200);
+    });
+  })();
+
+  // -------------------------
+  // Small UI micro interactions
+  // -------------------------
+  // CTA button glow on hover (JS-enhanced)
+  $('#primaryCTA').addEventListener('mouseenter', e=>{
+    e.target.animate([{boxShadow:'0 8px 28px rgba(67,166,255,0.08)'},{boxShadow:'0 18px 48px rgba(67,166,255,0.14)'}],{duration:420,fill:'forwards'});
+  });
+
+  // make floats slowly orbit for 3D-feel
+  (function(){
+    const floats = $$('.float');
+    let t=0;
+    function tick(){
+      t += 0.006;
+      floats.forEach((el,i)=>{
+        const k = 12 + i*6;
+        el.style.transform = `translate3d(${Math.sin(t*(0.8+i*0.2))*k}px, ${Math.cos(t*(1+i*0.1))*8}px, 0)`;
+      });
+      requestAnimationFrame(tick);
+    }
+    tick();
+  })();
+
+  // Accessibility: allow keyboard nav highlighting
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Tab') document.body.classList.add('user-tab');
+  });
+
+  </script>
+</body>
+</html>
