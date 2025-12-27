@@ -188,6 +188,123 @@
     @media (prefers-reduced-motion: reduce){
       *{transition:none !important;animation:none !important}
     }
+
+    /* =========================
+   EXTRA RESPONSIVE OPTIMIZATION
+   ========================= */
+
+/* Large tablets */
+@media (max-width: 1200px) {
+  .hero-inner {
+    grid-template-columns: 1fr 360px;
+  }
+
+  .float.small { right: 4%; top: 16%; }
+  .float.mid { left: 4%; bottom: 6%; }
+}
+
+/* Tablets */
+@media (max-width: 900px) {
+  header { top: 8px; }
+
+  .nav {
+    padding: .5rem .7rem;
+  }
+
+  nav ul {
+    gap: .6rem;
+  }
+
+  nav a {
+    font-size: .88rem;
+    padding: .45rem .6rem;
+  }
+
+  .hero {
+    min-height: auto;
+    padding: 5rem 0 3rem;
+  }
+
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .hero-card {
+    max-width: 520px;
+    margin-inline: auto;
+  }
+
+  .float {
+    display: none; /* performance + clean mobile look */
+  }
+
+  canvas#particles {
+    opacity: 0.6;
+  }
+}
+
+/* Phones */
+@media (max-width: 600px) {
+
+  .nav-actions {
+    display: none;
+  }
+
+  nav ul {
+    gap: .4rem;
+  }
+
+  nav a {
+    font-size: .82rem;
+    padding: .4rem .5rem;
+  }
+
+  .hero-left h1 {
+    font-size: clamp(1.7rem, 7vw, 2.4rem);
+  }
+
+  .hero-left p {
+    font-size: .95rem;
+  }
+
+  .cta-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cta-primary,
+  .cta-ghost {
+    width: 100%;
+    text-align: center;
+  }
+
+  .features {
+    grid-template-columns: 1fr;
+  }
+
+  .slides {
+    height: 240px;
+  }
+
+  footer > div {
+    flex-direction: column;
+    gap: .6rem;
+    text-align: center;
+  }
+}
+
+/* Ultra small devices */
+@media (max-width: 380px) {
+  nav a {
+    font-size: .78rem;
+  }
+
+  .hero-left h1 {
+    font-size: 1.6rem;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -610,4 +727,5 @@
   </script>
 </body>
 </html>
+
 
