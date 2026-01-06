@@ -33,12 +33,7 @@ Perfect for early-stage businesses that want to present their solution clearly a
 ✅ Section-based layout for services, features, contact
 ✅ Deployed on Netlify (instant preview)
 
-🛠 Technologies Used
-Layer	Tech
-Markup	HTML
-Styling	CSS (or Tailwind if used)
-Deployment	Netlify
-Code Host	GitHub
+---
 
 ## 📬 Contact Form
 The contact form is currently a **demo** (no backend integration).  
