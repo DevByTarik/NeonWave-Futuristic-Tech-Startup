@@ -6,6 +6,8 @@ This is a modern, responsive website demo built to showcase a clean, professiona
 
 👉 Live demo: https://futuristictechstartup.netlify.app/
 
+---
+
 🔥 What This Project Is
 
 This project is a landing page template designed for small tech companies and startups that need:
@@ -19,6 +21,8 @@ Fast loading performance
 A modern, mobile-first design
 
 Perfect for early-stage businesses that want to present their solution clearly and professionally.
+
+---
 
 💡 Features
 
@@ -36,15 +40,18 @@ Styling	CSS (or Tailwind if used)
 Deployment	Netlify
 Code Host	GitHub
 
-Customize to your needs 💻
+## 📬 Contact Form
+The contact form is currently a **demo** (no backend integration).  
+Can be easily connected to Netlify Forms or a custom backend if needed.
 
-No build tools required — this is a static HTML/CSS project.
+---
 
-📞 Contact / Hire Me
+## 👤 Author
+Built by **Tarik**  
+Freelance Web Developer
 
-I build fast, modern websites for small businesses and startups.
-If you’re looking to launch your website quickly and professionally, let’s talk 👇
+---
 
-💼 LinkedIn: [https://www.linkedin.com/in/yourprofile](https://www.linkedin.com/in/tarik-buljuba%C5%A1i%C4%87-buljubasic-4a4aa8279/)
+## 📄 License
+This project is for portfolio and demonstration purposes.
 
-✉️ Email: devbytarik@gmail.com
